@@ -1,0 +1,31 @@
+archi:
+  id: DroidCicdDemoPipeline
+  pipeline:
+    repo:
+      type: CodeCommit
+      name: droid-cicd-demo
+      create: true
+    build:
+      compute: Small
+    validate:
+      compute: Small
+      emails:
+      - techie@lynx.rocks
+mobile:
+  droid:
+    pipeline:
+      repo:
+        type: GitHub
+        name: droid-sample
+        tokenName: github-token
+        owner: engr-lynx
+      build:
+        compute: Small
+      staging: true
+      test:
+        compute: Small
+        specFilename: testspec.yml
+      validate:
+        emails:
+        - techie@lynx.rocks
+      deploy: true
