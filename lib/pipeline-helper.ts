@@ -2,11 +2,10 @@ import { join } from 'path';
 import { Stack, SecretValue, Duration } from '@aws-cdk/core';
 import { Artifact } from '@aws-cdk/aws-codepipeline';
 import { GitHubSourceAction, CodeCommitSourceAction, CodeBuildAction, CodeBuildActionType, LambdaInvokeAction } from '@aws-cdk/aws-codepipeline-actions';
-import { SimpleSynthAction } from '@aws-cdk/pipelines';
 import { Repository } from '@aws-cdk/aws-codecommit';
 import { PipelineProject, ComputeType, LinuxBuildImage, BuildSpec, Cache } from '@aws-cdk/aws-codebuild';
 import { Repository as EcrRepository, AuthorizationToken } from '@aws-cdk/aws-ecr';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { IBucket } from '@aws-cdk/aws-s3';
 import { Asset } from '@aws-cdk/aws-s3-assets';
 import { PythonFunction } from '@aws-cdk/aws-lambda-python';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
@@ -71,7 +70,7 @@ export function buildRepoSourceAction (scope: Stack, repoSourceActionProps: Repo
 
 export interface YarnSynthActionProps extends BasePipelineHelperProps, BuildConf {
   sourceCode: Artifact,
-  cacheBucket: Bucket,
+  cacheBucket: IBucket,
 }
 
 export function buildYarnSynthAction (scope: Stack, yarnSynthActionProps: YarnSynthActionProps) {
@@ -150,7 +149,7 @@ export function buildYarnSynthAction (scope: Stack, yarnSynthActionProps: YarnSy
 export interface ArchiValidateActionProps extends BasePipelineHelperProps, ValidateConf {
   cloudAssembly: Artifact,
   runOrder?: number,
-  cacheBucket: Bucket,
+  cacheBucket: IBucket,
 }
 
 export function buildArchiValidateAction (scope: Stack, archiValidateActionProps: ArchiValidateActionProps) {
@@ -331,7 +330,7 @@ export interface DroidBuildActionProps extends BasePipelineHelperProps, BuildCon
   envVar?: KeyValue,
   prebuildCommands?: string[];
   postbuildCommands?: string[];
-  cacheBucket: Bucket,
+  cacheBucket: IBucket,
 }
 
 export function buildDroidBuildAction (scope: Stack, droidBuildActionProps: DroidBuildActionProps) {
@@ -425,7 +424,7 @@ export function buildDroidBuildAction (scope: Stack, droidBuildActionProps: Droi
 export interface CustomActionProps extends BasePipelineHelperProps, StageConf {
   type?: CodeBuildActionType,
   input: Artifact,
-  cacheBucket: Bucket,
+  cacheBucket: IBucket,
 }
 
 export function buildCustomAction (scope: Stack, customActionProps: CustomActionProps) {

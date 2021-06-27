@@ -1,18 +1,17 @@
 import { Construct, Stack, StackProps } from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
-import { Artifact, Pipeline } from '@aws-cdk/aws-codepipeline';
+import { Pipeline } from '@aws-cdk/aws-codepipeline';
 import { ManualApprovalAction, CodeBuildActionType, S3DeployAction } from '@aws-cdk/aws-codepipeline-actions';
 import { PipelineConf } from './context-helper';
 import { buildRepoSourceAction, buildDroidBuildAction, buildCustomAction } from './pipeline-helper'
 
-export interface RepoPlayPipelineProps extends StackProps, PipelineConf {
-  cacheBucket: Bucket,
-}
+export interface RepoPlayPipelineProps extends StackProps, PipelineConf {}
 
 export class RepoPlayPipelineStack extends Stack {
 
   constructor(scope: Construct, id: string, repoPlayPipelineProps: RepoPlayPipelineProps) {
     super(scope, id, repoPlayPipelineProps);
+    const cacheBucket = new Bucket(this, 'CacheBucket');
     const pipelineStages = [];
     const { action: repoAction, sourceCode } = buildRepoSourceAction(this, {
       ...repoPlayPipelineProps.repo,
@@ -29,7 +28,7 @@ export class RepoPlayPipelineStack extends Stack {
       ...repoPlayPipelineProps.build,
       prefix,
       sourceCode,
-      cacheBucket: repoPlayPipelineProps.cacheBucket,
+      cacheBucket,
     });
     const buildStage = {
       stageName: 'Build',
@@ -48,7 +47,7 @@ export class RepoPlayPipelineStack extends Stack {
         prefix,
         type: CodeBuildActionType.TEST,
         input: sourceCode,
-        cacheBucket: repoPlayPipelineProps.cacheBucket,
+        cacheBucket,
       });
       const testStage = {
         stageName: 'Test',
