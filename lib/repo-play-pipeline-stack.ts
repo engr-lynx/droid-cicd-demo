@@ -5,13 +5,20 @@ import { ManualApprovalAction, CodeBuildActionType, S3DeployAction } from '@aws-
 import { PipelineConf } from './context-helper';
 import { buildRepoSourceAction, buildDroidBuildAction, buildCustomAction } from './pipeline-helper'
 
-export interface RepoPlayPipelineProps extends StackProps, PipelineConf {}
+export interface RepoPlayPipelineProps extends StackProps, PipelineConf {
+  cacheBucketArn?: string,
+}
 
 export class RepoPlayPipelineStack extends Stack {
 
   constructor(scope: Construct, id: string, repoPlayPipelineProps: RepoPlayPipelineProps) {
     super(scope, id, repoPlayPipelineProps);
-    const cacheBucket = new Bucket(this, 'CacheBucket');
+    let cacheBucket;
+    if (repoPlayPipelineProps.cacheBucketArn) {
+      cacheBucket = Bucket.fromBucketArn(this, 'CacheBucket', repoPlayPipelineProps.cacheBucketArn);
+    } else {
+      cacheBucket = new Bucket(this, 'CacheBucket');
+    };
     const pipelineStages = [];
     const { action: repoAction, sourceCode } = buildRepoSourceAction(this, {
       ...repoPlayPipelineProps.repo,
