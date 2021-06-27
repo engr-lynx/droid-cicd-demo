@@ -79,7 +79,7 @@ export function buildYarnSynthAction (scope: Stack, yarnSynthActionProps: YarnSy
   const cloudAssembly = new Artifact(cloudAssemblyId);
   const runtimes = {
     nodejs: 12,
-    docker: 20.10,
+    docker: 19,
   };
   const installCommands = [
     'yarn install',
@@ -263,7 +263,7 @@ export function buildContBuildAction (scope: Stack, contBuildActionProps: ContBu
   };
   const runtimes = {
     ...contBuildActionProps.runtimes,
-    docker: 20.10,
+    docker: 19,
   };
   const prebuildCommands = [];
   prebuildCommands.push(...contBuildActionProps.prebuildCommands??[]);
