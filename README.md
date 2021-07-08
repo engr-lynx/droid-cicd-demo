@@ -4,13 +4,7 @@ Simplify building on AWS by adopting this [CDK](https://docs.aws.amazon.com/cdk/
 
 ## Sample Usage
 
-```typescript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
-```
+(to be added)
 
 ## Prerequisites
 
@@ -56,15 +50,15 @@ cdk deploy
 
 #### How does an IaC pipeline simplify building on the cloud?
 
-Answer 1
+(to be added)
 
 #### Why use CDK instead of CloudFormation scripts?
 
-Answer 2
+(to be added)
 
 #### What value does CDK Pipelines add to CDK?
 
-Answer 3
+(to be added)
 
 ## Schema
 
